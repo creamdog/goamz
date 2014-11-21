@@ -15,23 +15,17 @@ import (
 const debug = false
 
 type CloudWatchLogs struct {
-	Service  aws.AWSService
 	Endpoint string
 	Auth     aws.Auth
 	Region   aws.Region
 }
 
 // Create a new CloudWatchLogs object for a given namespace
-func New(auth aws.Auth, region aws.ServiceInfo) (*CloudWatchLogs, error) {
-	service, err := aws.NewService(auth, region)
-	if err != nil {
-		return nil, err
-	}
+func New(auth aws.Auth, endpoint string, region string) (*CloudWatchLogs, error) {
 	return &CloudWatchLogs{
-		Service:  service,
-		Endpoint: region.Endpoint,
+		Endpoint: endpoint,
 		Auth:     auth,
-		Region:   aws.Region{Name: "us-east-1"},
+		Region:   aws.Region{Name: region},
 	}, nil
 }
 
@@ -175,7 +169,7 @@ func (c *CloudWatchLogs) DescribeLogStreams(req *DescribeLogStreamsRequest) (r [
 type Event struct {
 	IngestionTime int
 	Message       string
-	Timestamp     int
+	Timestamp     int64
 }
 
 type GetLogEventsResponse struct {
@@ -197,7 +191,7 @@ type GetLogEventsRequest struct {
 func (c *CloudWatchLogs) GetLogEvents(req *GetLogEventsRequest) (r *GetLogEventsResponse, err error) {
 	data, err := c.query("Logs_20140328.GetLogEvents", req)
 	if err != nil {
-		fmt.Printf("%v\n", err)
+		//fmt.Printf("%v\n", err)
 		return nil, err
 	}
 	var result GetLogEventsResponse
