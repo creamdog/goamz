@@ -17,7 +17,7 @@ Just use `go get`. For example:
 * `$ go get github.com/creamdog/goamz/logs`
 
 
-## How to use example
+## Usage Example
 
 ```go
 package main
