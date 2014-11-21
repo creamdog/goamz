@@ -69,7 +69,7 @@ func main() {
 			})
 			if err != nil {
 				fmt.Printf("%v\n", err)
-				return
+				continue
 			}
 
 			for _, event := range events.Events {
