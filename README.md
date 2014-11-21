@@ -2,6 +2,14 @@
 
 builds on top of [github.com/crowdmob/goamz/aws](github.com/crowdmob/goamz/aws) adding support for [Amazon CloudWatch Logs](http://docs.aws.amazon.com/AmazonCloudWatch/latest/DeveloperGuide/WhatIsCloudWatchLogs.html)
 
+## What's implemented
+
+Basically only what's needed in order to monitor Amazon CloudWatch logs
+
+* fetch group descriptors
+* fetch stream descriptors
+* fetch stream events
+
 ## How to build and install
 
 Just use `go get`. For example:
