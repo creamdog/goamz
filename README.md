@@ -1,6 +1,6 @@
 # goamz / logs
 
-builds on top of [https://github.com/crowdmob/goamz/aws](github.com/crowdmob/goamz) adding support for [Amazon CloudWatch Logs](http://docs.aws.amazon.com/AmazonCloudWatch/latest/DeveloperGuide/WhatIsCloudWatchLogs.html)
+builds on top of [github.com/crowdmob/goamz](https://github.com/crowdmob/goamz) adding support for [Amazon CloudWatch Logs](http://docs.aws.amazon.com/AmazonCloudWatch/latest/DeveloperGuide/WhatIsCloudWatchLogs.html)
 
 ## What's implemented
 
