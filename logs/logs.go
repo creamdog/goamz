@@ -99,11 +99,11 @@ func (k *CloudWatchLogs) query(target string, payload interface{}) ([]byte, erro
 
 type LogGroup struct {
 	Arn               string
-	CreationTime      int
+	CreationTime      int64
 	LogGroupName      string
 	MetricFilterCount int
 	RetentionInDays   int
-	StoredBytes       int
+	StoredBytes       int64
 }
 
 type DescribeLogGroupsResponse struct {
@@ -130,12 +130,12 @@ func (c *CloudWatchLogs) DescribeLogGroups(req *DescribeLogGroupsRequest) (r []*
 
 type LogStream struct {
 	Arn                 string
-	CreationTime        int
-	FirstEventTimestamp int
-	LastEventTimestamp  int
-	LastIngestionTime   int
+	CreationTime        int64
+	FirstEventTimestamp int64
+	LastEventTimestamp  int64
+	LastIngestionTime   int64
 	LogStreamName       string
-	StoredBytes         int
+	StoredBytes         int64
 	UploadSequenceToken string
 }
 
@@ -180,12 +180,12 @@ type GetLogEventsResponse struct {
 
 type GetLogEventsRequest struct {
 	Limit         int    `json:"limit,omitempty"`
-	EndTime       int    `json:"endTime,omitempty"`
+	EndTime       int64  `json:"endTime,omitempty"`
 	LogGroupName  string `json:"logGroupName,omitempty"`
 	LogStreamName string `json:"logStreamName,omitempty"`
 	NextToken     string `json:"nextToken,omitempty"`
 	StartFromHead bool   `json:"startFromHead"`
-	StartTime     int    `json:"startTime"`
+	StartTime     int64  `json:"startTime"`
 }
 
 func (c *CloudWatchLogs) GetLogEvents(req *GetLogEventsRequest) (r *GetLogEventsResponse, err error) {
