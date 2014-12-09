@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"sort"
 	"strings"
 	"time"
 )
@@ -191,10 +192,67 @@ type GetLogEventsRequest struct {
 func (c *CloudWatchLogs) GetLogEvents(req *GetLogEventsRequest) (r *GetLogEventsResponse, err error) {
 	data, err := c.query("Logs_20140328.GetLogEvents", req)
 	if err != nil {
-		//fmt.Printf("%v\n", err)
 		return nil, err
 	}
 	var result GetLogEventsResponse
 	json.Unmarshal(data, &result)
 	return &result, nil
+}
+
+type CreateLogGroupRequest struct {
+	LogGroupName string `json:"logGroupName"`
+}
+
+func (c *CloudWatchLogs) CreateLogGroup(req *CreateLogGroupRequest) error {
+	_, err := c.query("Logs_20140328.CreateLogGroup", req)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type CreateLogStreamRequest struct {
+	LogGroupName  string `json:"logGroupName"`
+	LogStreamName string `json:"logStreamName"`
+}
+
+func (c *CloudWatchLogs) CreateLogStream(req *CreateLogStreamRequest) error {
+	_, err := c.query("Logs_20140328.CreateLogStream", req)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type LogEvent struct {
+	Message   string `json:"message"`
+	Timestamp int64  `json:"timestamp"`
+}
+
+type ByTimestamp []LogEvent
+
+func (events ByTimestamp) Len() int           { return len(events) }
+func (events ByTimestamp) Swap(i, j int)      { events[i], events[j] = events[j], events[i] }
+func (events ByTimestamp) Less(i, j int) bool { return events[i].Timestamp < events[j].Timestamp }
+
+type PutLogEventsRequest struct {
+	LogEvents     []LogEvent `json:"logEvents"`
+	LogGroupName  string     `json:"logGroupName"`
+	LogStreamName string     `json:"logStreamName"`
+	SequenceToken string     `json:"sequenceToken,omitempty"`
+}
+
+type PutLogEventsResponse struct {
+	NextSequenceToken string `json:"nextSequenceToken"`
+}
+
+func (c *CloudWatchLogs) PutLogEvents(req *PutLogEventsRequest) (string, error) {
+	sort.Sort(ByTimestamp(req.LogEvents))
+	data, err := c.query("Logs_20140328.PutLogEvents", req)
+	if err != nil {
+		return "", err
+	}
+	var result PutLogEventsResponse
+	json.Unmarshal(data, &result)
+	return result.NextSequenceToken, nil
 }
