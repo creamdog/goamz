@@ -6,7 +6,7 @@ builds on top of [github.com/crowdmob/goamz](https://github.com/crowdmob/goamz) 
 
 * fetch group descriptors
 * fetch stream descriptors
-* fetch stream events
+* fetch log events
 * create log groups
 * create log streams
 * send log events
