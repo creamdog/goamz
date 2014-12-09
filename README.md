@@ -4,11 +4,12 @@ builds on top of [github.com/crowdmob/goamz](https://github.com/crowdmob/goamz) 
 
 ## What's implemented
 
-Basically only what's needed in order to monitor Amazon CloudWatch logs
-
 * fetch group descriptors
 * fetch stream descriptors
 * fetch stream events
+* create log groups
+* create log streams
+* send log events
 
 ## How to build and install
 
