@@ -160,11 +160,22 @@ func (c *CloudWatchLogs) DescribeLogStreams(req *DescribeLogStreamsRequest) (r [
 	}
 	var result DescribeLogStreamsResponse
 	json.Unmarshal(data, &result)
+
+	list := make([]*LogStream, 0)
+	for _, value := range result.LogStreams {
+		list = append(list, value)
+	}
 	if len(result.NextToken) > 0 {
 		req.NextToken = result.NextToken
-		return c.DescribeLogStreams(req)
+		list2, err := c.DescribeLogStreams(req)
+		if err != nil {
+			return nil, err
+		}
+		for _, value := range list2 {
+			list = append(list, value)
+		}
 	}
-	return result.LogStreams, nil
+	return list, nil
 }
 
 type Event struct {
