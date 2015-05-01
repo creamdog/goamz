@@ -162,7 +162,11 @@ func (c *CloudWatchLogs) DescribeLogStreams(req *DescribeLogStreamsRequest) (r [
 	json.Unmarshal(data, &result)
 	if len(result.NextToken) > 0 {
 		req.NextToken = result.NextToken
-		return c.DescribeLogStreams(req)
+		tmp, err := c.DescribeLogStreams(req)
+		if err != nil {
+			return nil, err
+		}
+		result.LogStreams = append(result.LogStreams, tmp...)
 	}
 	return result.LogStreams, nil
 }
